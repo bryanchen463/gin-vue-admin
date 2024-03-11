@@ -27,7 +27,12 @@ func (metricService *SpeedService) CreateSpeed(metric *metrics.Speed) (err error
 // DeleteSpeed 删除耗时记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (metricService *SpeedService) DeleteSpeed(ID string) (err error) {
-	err = global.GVA_MONGO.RemoveId(context.Background(), ID)
+	id, err := primitive.ObjectIDFromHex(ID)
+	if err != nil {
+		global.GVA_LOG.Log(zapcore.ErrorLevel, "DeleteSpeed", zap.Any("ID", ID))
+		return err
+	}
+	err = global.GVA_MONGO.RemoveId(context.Background(), id)
 	return err
 }
 
@@ -42,7 +47,7 @@ func (metricService *SpeedService) DeleteSpeedByIds(IDs []string) (err error) {
 		}
 		ids = append(ids, id)
 	}
-	err = global.GVA_MONGO.Remove(context.Background(), bson.M{"_id": bson.M{"$in": ids}})
+	_, err = global.GVA_MONGO.RemoveAll(context.Background(), bson.M{"_id": bson.M{"$in": ids}})
 	return err
 }
 

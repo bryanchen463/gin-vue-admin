@@ -9,7 +9,7 @@ import (
 
 // 耗时 结构体  Speed
 type Speed struct {
-	Id          primitive.ObjectID `gorm:"primarykey" json:"ID" bson:"_id"`
+	Id          primitive.ObjectID `gorm:"primarykey" json:"ID" bson:"_id,omitempty"`
 	Metric_name string             `json:"metric_name" form:"metric_name" bson:"metric_name"` //指标名
 	Machine_ip  string             `json:"machine_ip" form:"machine_ip" bson:"machine_ip"`    //机器ip
 	Sample_time *time.Time         `json:"sample_time" form:"sample_time" bson:"sample_time"` //创建时间
